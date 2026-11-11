@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>loadbalancer-demo</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>inventory-service</artifactId>
+    <name>Inventory Service</name>
+    <description>Provider service running on ports 8081, 8082, 8083</description>
+
+    <dependencies>
+        <!--
+            [SO SÁNH VỚI order-service/pom.xml]
+            Inventory Service đóng vai trò Service Provider (bên nhận request kiểm tra tồn kho).
+            Nó chỉ cần spring-boot-starter-web bình thường, KHÔNG cần thư viện LoadBalancer,
+            vì việc chọn instance nào (8081, 8082 hay 8083) do phía Client (Order Service) thực hiện.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Swagger UI (/swagger-ui.html) để xem API trực tiếp trên từng instance 8081, 8082, 8083 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,31 @@
+# ==============================================================================
+# CẤU HÌNH ORDER SERVICE (Port 8080) - SLIDE 6 & SLIDE 7
+# ==============================================================================
+
+server:
+  port: 8080  # Order Service chạy ở cổng 8080, đóng vai trò điểm tiếp nhận request từ người dùng
+
+spring:
+  application:
+    name: order-service
+
+  # [STATIC SERVICE INSTANCE CONFIGURATION - Cấu hình danh sách instance tĩnh]
+  # Bình thường trong hệ thống lớn, ta có Eureka Server để các service tự đăng ký địa chỉ IP/Port.
+  # Trong bài demo này, ta cấu hình danh sách tĩnh trực tiếp tại đây thông qua SimpleDiscoveryClient
+  # (tính năng có sẵn của Spring Cloud) để không cần dựng thêm Eureka mà vẫn chạy LoadBalancer chuẩn.
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            # Tên logic (Logical Service Name) của dịch vụ kho hàng.
+            # QUAN TRỌNG: Tên "inventory-service" ở đây PHẢI KHỚP với tên dùng trong code Java:
+            # restClient.get().uri("http://inventory-service/api/inventory/check")
+            inventory-service:
+              - uri: http://localhost:8081   # Instance 1 của Inventory Service
+              - uri: http://localhost:8082   # Instance 2 của Inventory Service
+              - uri: http://localhost:8083   # Instance 3 của Inventory Service
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss} %-5level [%thread] %logger{20} - %msg%n"

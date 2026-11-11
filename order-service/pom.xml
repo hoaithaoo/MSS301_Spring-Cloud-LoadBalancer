@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example</groupId>
+        <artifactId>loadbalancer-demo</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>order-service</artifactId>
+    <name>Order Service</name>
+    <description>Client service on port 8080 with Spring Cloud LoadBalancer</description>
+
+    <dependencies>
+        <!-- Cung cấp Spring MVC (Tomcat chạy ở port 8080) và RestClient để gọi HTTP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--
+            [ĐIỂM NHẤN SLIDE 7 - Project Structure & Dependencies]
+            Thư viện Spring Cloud LoadBalancer CHỈ cần cài ở Order Service (bên ĐI GỌI).
+            Lý do: Đây là mô hình CLIENT-SIDE LOAD BALANCING (Cân bằng tải ở phía Client).
+            - Order Service sẽ tự lấy danh sách server và tự chọn port (8081 / 8082 / 8083).
+            - Inventory Service (bên ĐƯỢC GỌI) không hề biết và không cần cài thư viện này.
+        -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <!-- Swagger UI (/swagger-ui.html) để bấm test API trực quan trên trình duyệt khi demo -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
